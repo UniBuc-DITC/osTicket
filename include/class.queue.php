@@ -609,6 +609,7 @@ class CustomQueue extends VerySimpleModel {
                 'thread_count' =>   __('Thread Count'),
                 'reopen_count' =>   __('Reopen Count'),
                 'attachment_count' => __('Attachment Count'),
+                'collaborators' => __('Collaborators'),
                 'task_count' => __('Task Count'),
                 ) + $cdata;
 
@@ -835,6 +836,15 @@ class CustomQueue extends VerySimpleModel {
         foreach ($columns as $column) {
             $query = $column->mangleQuery($query, $this->getRoot());
             $headers[] = $column->getHeading();
+        }
+
+        // Add list of collaborators, if requested
+        if (array_key_exists('collaborators', $fields)) {
+            $query->annotate(array(
+                'collaborators' => TicketThread::objects()
+                    ->filter(array('ticket__ticket_id' => new SqlField('ticket_id', 1)))
+                    ->aggregate(array('group_concat' => new SqlAggregate('GROUP_CONCAT', 'collaborators__user__name')))
+            ));
         }
 
         // Apply visibility
