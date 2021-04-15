@@ -54,9 +54,13 @@ if (count($ext_bks)) {
 }
 if ($cfg && $cfg->isClientRegistrationEnabled()) {
     if (count($ext_bks)) echo '<hr style="width:70%"/>'; ?>
+    <?php // Disable self-registration links
+    /*
     <div style="margin-bottom: 5px">
     <?php echo __('Not yet registered?'); ?> <a href="account.php?do=create"><?php echo __('Create an account'); ?></a>
     </div>
+    */
+    ?>
 <?php } ?>
     <div>
     <b><?php echo __("I'm an agent"); ?></b> —
