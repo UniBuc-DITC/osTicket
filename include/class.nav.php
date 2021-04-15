@@ -350,7 +350,8 @@ class UserNav {
                                            'title'=>__('View ticket status'));
                 }
             } else {
-                $navs['status']=array('desc'=>__('Check Ticket Status'),'href'=>'view.php','title'=>'');
+                // Don't show the "check ticket status" option, we want people to log in to see their tickets.
+                //$navs['status']=array('desc'=>__('Check Ticket Status'),'href'=>'view.php','title'=>'');
             }
             $this->navs=$navs;
         }
