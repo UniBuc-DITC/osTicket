@@ -15,6 +15,11 @@ $info = Format::htmlchars(($errors && $_POST)?$_POST:$info);
 
 ?>
 <h1><?php echo __('Account Registration'); ?></h1>
+
+<p>Self-registration is disabled. Please log in using your institutional account.</p>
+
+<?php // Disable self-registration page
+/*
 <p><?php echo __(
 'Use the forms below to create or update the information we have on file for your account'
 ); ?>
@@ -107,3 +112,4 @@ $(function() {
 });
 </script>
 <?php }
+*/
