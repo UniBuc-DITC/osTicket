@@ -305,6 +305,8 @@ class Internationalization {
         //   language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" )
         // Samples: "hu, en-us;q=0.66, en;q=0.33", "hu,en-us;q=0.5"
         $browser_langcodes = array();
+        // We intentionally ignore the browser's preferred languages.
+        /*
         $matches = array();
         if (preg_match_all('@(?<=[, ]|^)([a-zA-Z-]+|\*)(?:;q=([0-9.]+))?(?:$|\s*,\s*)@',
             trim($_SERVER['HTTP_ACCEPT_LANGUAGE']), $matches, PREG_SET_ORDER)) {
@@ -318,6 +320,7 @@ class Internationalization {
             $browser_langcodes[$langcode] = (int) ($qvalue * 1000);
           }
         }
+        */
 
         // We should take pristine values from the HTTP headers, but
         // Internet Explorer from version 7 sends only specific language
