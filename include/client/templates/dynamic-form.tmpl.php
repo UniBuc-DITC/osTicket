@@ -33,7 +33,11 @@ $isCreate = (isset($options['mode']) && $options['mode'] == 'create');
         ?>
         <tr>
             <td colspan="2" style="padding-top:10px;">
-            <?php if (!$field->isBlockLevel()) { ?>
+            <?php
+                # We want a special format for the issue description field
+                $isMessageField = $field->get('name') == 'message'
+            ?>
+            <?php if (!$field->isBlockLevel() || $isMessageField) { ?>
                 <label for="<?php echo $field->getFormName(); ?>"><span class="<?php
                     if ($field->isRequiredForUsers()) echo 'required'; ?>">
                 <?php echo Format::htmlchars($field->getLocal('label')); ?>
@@ -42,7 +46,7 @@ $isCreate = (isset($options['mode']) && $options['mode'] == 'create');
                 <span class="error">*</span>
             <?php }
             ?></span><?php
-                if ($field->get('hint')) { ?>
+                if ($field->get('hint') && !$isMessageField) { ?>
                     <br /><em style="color:gray;display:inline-block"><?php
                         echo Format::viewableImages($field->getLocal('hint')); ?></em>
                 <?php
