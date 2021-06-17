@@ -1,0 +1,24 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      # Automatically generate a random root password on startup
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      # These values are used during the install, as described in the `README`
+      - MYSQL_DATABASE=osticket
+      - MYSQL_USER=osticket
+      - MYSQL_PASSWORD=osticket_pwd
+    ports:
+      # Expose the database port to allow connecting to it locally
+      - "3306:3306"
+  osticket:
+    # Use a custom image with the required extensions
+    build: ./docker/php/
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html/:ro
+      - ./docker/ost-config.php:/var/www/html/include/ost-config.php
