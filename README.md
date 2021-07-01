@@ -18,7 +18,7 @@ Start the services using:
 docker-compose up
 ```
 
-This starts a container with an Apache server and a container with a MySQL database.
+This starts a container with an Apache web server and a container with a MySQL database.
 You can access the local instance at `http://localhost:8080`.
 
 Make sure you specify the following database settings:
@@ -29,3 +29,9 @@ Make sure you specify the following database settings:
 - MySQL Password: `osticket_pwd`
 
 (this is to match the settings on the `mysql` container)
+
+When creating the admin account, it's recommended to use some easy-to-remember credentials such as:
+
+- Email: `admin@example.com`
+- Username: `administrator` (osTicket forbids the `admin` username)
+- Password: `Test1234`
