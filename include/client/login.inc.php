@@ -16,7 +16,11 @@ if ($content) {
 
 ?>
 <h1><?php echo Format::display($title); ?></h1>
+<?php
+// no account can be created, because all the auth is done via Microsoft account
+/*
 <p><?php echo Format::display($body); ?></p>
+ */?>
 <form action="login.php" method="post" id="clientLogin">
     <?php csrf_token(); ?>
 <div style="display:table-row">
@@ -61,6 +65,7 @@ if ($cfg && $cfg->isClientRegistrationEnabled()) {
     </div>
 </div>
 </form>
+<?php /*
 <br>
 <p>
 <?php
@@ -70,3 +75,4 @@ if ($cfg->getClientRegistrationMode() != 'disabled'
         '<a href="open.php">', '</a>');
 } ?>
 </p>
+ */?>
