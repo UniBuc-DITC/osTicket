@@ -5,3 +5,9 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions mysqli gd imap intl apcu opcache
+
+# Enable Apache rewrite engine to make the API work
+RUN a2enmod rewrite
+
+# Install the Xdebug extension for debugging support
+RUN install-php-extensions xdebug

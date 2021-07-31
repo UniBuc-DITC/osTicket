@@ -35,3 +35,11 @@ When creating the admin account, it's recommended to use some easy-to-remember c
 - Email: `admin@example.com`
 - Username: `administrator` (osTicket forbids the `admin` username)
 - Password: `Test1234`
+
+## Debugging with Xdebug
+
+The development Docker image supports step-by-step debugging using [the Xdebug plugin](https://xdebug.org/).
+
+Before using this feature, you might want to review and change the configuration settings in `docker/php/conf.d/xdebug.ini`
+
+You will also need to configure your IDE. For VS Code you can use [the PHP Debug extension](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug). For PhpStorm you can follow [these instructions](https://phauer.com/2017/debug-php-docker-container-idea-phpstorm/).
