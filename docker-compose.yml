@@ -14,7 +14,7 @@ services:
       - "3306:3306"
   osticket:
     # Use a custom image with the required extensions
-    build: ./docker/php/
+    build: ./docker/development/
     depends_on:
       - mysql
     ports:
@@ -22,5 +22,5 @@ services:
     volumes:
       - ./:/var/www/html/:ro
       - ./docker/ost-config.php:/var/www/html/include/ost-config.php
-      - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
-      - ./docker/php/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini:ro
+      - ./docker/development/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+      - ./docker/development/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini:ro
