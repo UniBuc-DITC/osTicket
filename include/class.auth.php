@@ -617,6 +617,9 @@ Signal::connect('api', function($dispatcher) {
                     ?: UserAuthenticationBackend::getBackend($class::$id);
                 if ($bk instanceof ExternalAuthentication)
                     $bk->triggerAuth();
+            } else {
+                header('Location: ' . '/login.php?do=ext&bk=openid_ms.client');
+                exit;
             }
         })
     );
