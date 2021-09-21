@@ -19,6 +19,9 @@ services:
       - mysql
     ports:
       - "8080:80"
+    extra_hosts:
+      # Expose the host at `host.docker.internal` to allow Xdebug to connect to it
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/var/www/html/
       - ./docker/ost-config.php:/var/www/html/include/ost-config.php
