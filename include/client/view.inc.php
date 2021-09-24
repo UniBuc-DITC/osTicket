@@ -71,6 +71,10 @@ if ($thisclient && $thisclient->isGuest()
                     <td><?php echo Format::htmlchars($dept instanceof Dept ? $dept->getName() : ''); ?></td>
                 </tr>
                 <tr>
+                    <th><?php echo __('Help Topic');?>:</th>
+                    <td><?php echo Format::htmlchars($ticket->getHelpTopic()); ?></td>
+                </tr>
+                <tr>
                     <th><?php echo __('Create Date');?>:</th>
                     <td><?php echo Format::datetime($ticket->getCreateDate()); ?></td>
                 </tr>
@@ -94,6 +98,11 @@ if ($thisclient && $thisclient->isGuest()
                <tr>
                    <th><?php echo __('Phone');?>:</th>
                    <td><?php echo $ticket->getPhoneNumber(); ?></td>
+               </tr>
+               <tr>
+                   <!-- Empty row, to balance out the ones on the other side -->
+                   <th>&nbsp;</th>
+                   <td>&nbsp;</td>
                </tr>
             </table>
        </td>
