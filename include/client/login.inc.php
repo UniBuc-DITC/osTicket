@@ -17,10 +17,12 @@ if ($content) {
 ?>
 <h1><?php echo Format::display($title); ?></h1>
 <?php
-// no account can be created, because all the auth is done via Microsoft account
+// No account can be created, because all authentication is done via MS365.
+// TODO: make we could just modify the custom message from the admin interface?
 /*
 <p><?php echo Format::display($body); ?></p>
- */?>
+*/
+?>
 <form action="login.php" method="post" id="clientLogin">
     <?php csrf_token(); ?>
 <div style="display:table-row">
@@ -69,7 +71,9 @@ if ($cfg && $cfg->isClientRegistrationEnabled()) {
     </div>
 </div>
 </form>
-<?php /*
+<?php
+// Disable lost account message
+/*
 <br>
 <p>
 <?php
@@ -79,4 +83,5 @@ if ($cfg->getClientRegistrationMode() != 'disabled'
         '<a href="open.php">', '</a>');
 } ?>
 </p>
- */?>
+*/
+?>
