@@ -2892,6 +2892,8 @@ implements RestrictedAccess, Threadable, Searchable {
                 $audit = array('team' => $assignee->getName());
                 if (($referral=$this->hasReferral($assignee,ObjectModel::OBJECT_TYPE_TEAM)))
                     $referral->delete();
+                if ($this->getStaffId())
+                    $this->staff_id = 0;
             }
         } else {
             $errors['assignee'] = __('Unknown assignee');
