@@ -85,6 +85,9 @@ $users->order_by($order . $order_column);
             <div class="pull-left flush-left">
                 <h2><?php echo __('User Directory'); ?></h2>
             </div>
+            <?php
+            // These options are not necessary, because all the accounts are managed by Microsoft 365
+            /*
             <div class="pull-right">
                 <?php if ($thisstaff->hasPerm(User::PERM_CREATE)) { ?>
                 <a class="green button action-button popup-dialog"
@@ -99,7 +102,7 @@ $users->order_by($order . $order_column);
                 </a>
                 <?php } ?>
                 <span class="action-button" data-dropdown="#action-dropdown-more"
-                      style="/*DELME*/ vertical-align:top; margin-bottom:0">
+                      style="vertical-align:top; margin-bottom:0">
                     <i class="icon-caret-down pull-right"></i>
                     <span ><i class="icon-cog"></i> <?php echo __('More');?></span>
                 </span>
@@ -135,6 +138,8 @@ $users->order_by($order . $order_column);
                     </ul>
                 </div>
             </div>
+            */
+            ?>
         </div>
     </div>
 </div>
