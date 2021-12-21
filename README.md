@@ -60,3 +60,50 @@ The development Docker image supports step-by-step debugging using [the Xdebug p
 Before using this feature, you might want to review and change the configuration settings in `docker/php/conf.d/xdebug.ini`
 
 You will also need to configure your IDE. For VS Code you can use [the PHP Debug extension](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug). For PhpStorm you can follow [these instructions](https://phauer.com/2017/debug-php-docker-container-idea-phpstorm/).
+
+## Updating to a new osTicket version
+
+### Fetching new osTicket versions
+
+To update to a new version of osTicket, you'll first need to make sure the upstream repo is available as a Git remote. If it's the first time you're performing such an update, use the following command:
+
+```sh
+git remote add upstream git@github.com:osTicket/osTicket.git
+```
+
+After adding the new remote, or whenever you want to get access locally to new versions/updates, run:
+
+```sh
+git fetch upstream
+```
+
+### Rebasing the custom changes
+
+**Warning:** These commands could be dangerous. Make sure you've read them at least once before executing them, and don't force-push your changes to the repo until you're sure of the final result.
+
+**In case of emergency:** If at any point you believe you've messed up the process and don't understand what's going on, use `git rebase --abort`, `git checkout custom` then `git reset --hard origin/custom`.
+
+Use `git log` on the `custom` branch to find the latest stable version the custom changes are based upon. Basically, keep going through the commit history until you find the latest tagged one.
+
+To perform the actual update, make sure **you're still on the `custom` branch** and that **your working directory is clean**. Then execute:
+
+```sh
+git rebase --onto <new-version-tag> <old-version-tag> custom
+```
+
+where:
+- `<old-version-tag>` is the tag/commit ID of the old version, e.g. `v1.14.1`
+- `<new-version-tag>` is the tag/commit ID of the new version, e.g. `v1.14.2`
+
+Expect to encounter some merge conflicts. These are caused by the upstream code changing in a way which **potentially breaks our custom changes**.
+If you're updating from one minor version to another minor version, the conflicts _should_ be relatively easy to solve.
+
+### Pushing the update to `origin`
+
+Once you're finished and **you've tested the updated code locally** you can now force-push the changes to the shared repository. To do so, run:
+
+```sh
+git push --force-with-lease
+```
+
+(the `--force-with-lease` flag will make Git check that nobody else tried to push to the repository while you were doing your rebase, to avoid overwriting other developers' work)
