@@ -12,6 +12,12 @@ If it's the first time you're creating the containers, or after you've deleted t
 you should copy the `include/ost-sampleconfig.php` file to `docker/ost-config.php`
 to run the installer.
 
+You might also have to change the permissions on the local file when doing the install:
+
+```shell
+chmod 0666 docker/ost-config.php
+```
+
 Start the services using:
 
 ```sh
@@ -20,6 +26,12 @@ docker compose up
 
 This starts a container with an Apache web server and a container with a MySQL database.
 You can access the local instance at `http://localhost:8080`.
+
+When creating the admin account, it's recommended to use some easy-to-remember credentials such as:
+
+- Email: `admin@example.com`
+- Username: `administrator` (osTicket forbids the `admin` username)
+- Password: `Test1234`
 
 Make sure you specify the following database settings:
 
@@ -30,11 +42,16 @@ Make sure you specify the following database settings:
 
 (this is to match the settings on the `mysql` container)
 
-When creating the admin account, it's recommended to use some easy-to-remember credentials such as:
+## Troubleshooting common errors
 
-- Email: `admin@example.com`
-- Username: `administrator` (osTicket forbids the `admin` username)
-- Password: `Test1234`
+**Issue:** I get a warning message `Warning: require(/var/www/html/include/ost-config.php): failed to open stream` when accessing the osTicket instance after startup.
+
+**Solution:** You need to create the `ost-config.php` file as described above. You might also have to remove a `include/ost-config.php` _directory_ before you can create that file, if Docker automatically created it by accident for you.
+
+**Issue:** I created the `ost-config.php` file as described but now I get a `Error response from daemon: not a directory` error.
+
+**Solution:** Caused by [this](https://github.com/docker/for-win/issues/9823) Docker for Windows issue. You will have to delete any empty directories in the `/mnt/wsl/docker-desktop-bind-mounts/<...>` directory.
+
 
 ## Debugging with Xdebug
 
