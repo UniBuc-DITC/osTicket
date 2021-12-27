@@ -79,7 +79,10 @@ if ($user) { ?>
 </form>
 </div>
 <div id="new-user-form" style="display:<?php echo $user ? 'none' :'block'; ?>;">
-<?php if ($thisstaff->hasPerm(User::PERM_CREATE)) { ?>
+<?php
+// We don't want to allow manual user creation in production
+if ($_ENV['OSTICKET_ENABLE_USER_CREATION'] === 'true' && $thisstaff->hasPerm(User::PERM_CREATE)) {
+?>
 <form method="post" class="user" action="<?php echo $info['action'] ?: '#users/lookup/form'; ?>">
     <table width="100%" class="fixed">
     <?php
