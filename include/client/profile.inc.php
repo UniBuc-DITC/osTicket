@@ -14,6 +14,9 @@ if ($acct = $thisclient->getAccount()) {
     $info=$acct->getInfo();
     $info=Format::htmlchars(($errors && $_POST)?$_POST:$info);
 ?>
+<?php
+// Disable preferences for users
+/*
 <tr>
     <td colspan="2">
         <div><hr><h3><?php echo __('Preferences'); ?></h3>
@@ -88,6 +91,8 @@ $selected = ($info['lang'] == $l['code']) ? 'selected="selected"' : ''; ?>
     </td>
 </tr>
 <?php } ?>
+*/
+?>
 <?php } ?>
 </table>
 <hr>
