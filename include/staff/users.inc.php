@@ -86,8 +86,10 @@ $users->order_by($order . $order_column);
                 <h2><?php echo __('User Directory'); ?></h2>
             </div>
             <?php
-            // These options are not necessary, because all the accounts are managed by Microsoft 365
-            /*
+            if ($_ENV['OSTICKET_ENABLE_USER_CREATION'] === 'true') {
+            // These options are not necessary in production, because there
+            // all the accounts are managed by Microsoft 365
+            ?>
             <div class="pull-right">
                 <?php if ($thisstaff->hasPerm(User::PERM_CREATE)) { ?>
                 <a class="green button action-button popup-dialog"
@@ -138,7 +140,8 @@ $users->order_by($order . $order_column);
                     </ul>
                 </div>
             </div>
-            */
+            <?php
+            }
             ?>
         </div>
     </div>
