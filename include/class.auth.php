@@ -793,6 +793,16 @@ Signal::connect('api', function($dispatcher) {
                 if ($bk instanceof ExternalAuthentication)
                     $bk->triggerAuth();
             } else {
+                /**
+                 * Due to changes in the SameSite cookie option policy
+                 * (see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite),
+                 * external authentication got broken in osTicket on many modern browsers.
+                 *
+                 * This work around (temporary re-redirect to the login page) is inefficient,
+                 * since it's basically a trampoline which sends the user through the login flow twice,
+                 * but it gets the job done.
+                 */
+                //error_log('Working around cookie SameSite limitation');
                 header('Location: ' . '/login.php?do=ext&bk=openid_ms.client');
                 exit;
             }
