@@ -186,13 +186,207 @@ class TicketApiController extends ApiController {
         return $this->createTicket($data);
     }
 
+    /* Get help topic info using parameter (help topic id) */
+    function getHelpTopicInfo() {
+        $topic_id = $_REQUEST['topicId'];
+        if (!($topic_id))
+            return $this->exerr(422, __('Missing topicId parameter'));
+
+        # Checks for valid ticket number
+        if (!is_numeric($topic_id))
+            return $this->exerr(401, __('Invalid topicId'));
+
+        # Checks for existing ticket with that number
+        $topic = Topic::lookup($topic_id);
+
+        if (!$topic)
+            return $this->exerr(401, __('Topic not found'));
+
+        $result = array(
+            'topic_info' => $topic->ht,
+            'status_code' => '0',
+            'status_msg' => 'success'
+        );
+
+        $result_code = 200;
+        $this->response($result_code, json_encode($result), $contentType="application/json");
+    }
+
+    /* Get public sub-departments using parameter (parent department ID) */
+    function getPublicChildDepartments() {
+        //convention for root deps
+        $ROOT_DEPARTMENT = -1;
+
+        $parentDepartmentId = $_REQUEST['departmentId'];
+        if (!($parentDepartmentId))
+            return $this->exerr(422, __('Missing departmentId parameter '));
+
+        // Checks for valid department number
+        if (!is_numeric($parentDepartmentId))
+            return $this->exerr(401, __('Invalid departmentId parameter'));
+
+
+        // Check if department exist
+        if ($parentDepartmentId != $ROOT_DEPARTMENT && !Dept::Lookup($parentDepartmentId))
+            return $this->exerr(401, __('Department not found'));
+
+
+        $subDepartments = array();
+
+        // get all deps if exists
+        if ($deps = Dept::getDepartments()) {
+            foreach ($deps as $id => $name) {
+                $dep = Dept::Lookup($id);
+                $tmp = array(
+                    'id' => $dep->getId(),
+                    'name' => $dep->getName()
+                );
+
+                // we get only public deps
+                if ($dep->isPublic() && $dep->isActive()) {
+
+                    // if we call api with $ROOT_DEPARTMENT value we want only root deps
+                    if ($parentDepartmentId == $ROOT_DEPARTMENT) {
+
+                        // we take only deps with no parent
+                        if (!$dep->getParent()) {
+                            array_push($subDepartments, $tmp);
+                        }
+
+                    } else {
+
+                        // if we call api with $parentDepartmentId value > 0
+                        // we take all direct sub-departments for $parentDepartmentId
+                        if ($dep->getParent() && $dep->getParent()->getId() == $parentDepartmentId) {
+                                array_push($subDepartments, $tmp);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        // if we have 0 elements => no deps was added in previous if =>
+        //  means that this $parentDepartmentId is a leaf in the tree => we mark this $parentDepartmentId as a leaf
+
+        if (count($subDepartments) == 0) {
+            $finalChild = true;
+        } else {
+            $finalChild = false;
+        }
+
+        $parentInfo = array(
+            'finalChild' => $finalChild,
+            'id' => $parentDepartmentId
+        );
+
+        $result = array(
+            'parent_info' => $parentInfo,
+            'sub_departments' => $subDepartments,
+            'status_code' => '0',
+            'status_msg' => 'success'
+        );
+
+        $result_code = 200;
+        $this->response($result_code, json_encode($result), $contentType='application/json');
+    }
+
+
+    /* private helper to obtain all parents for a $childDepartment (all nodes from $childDepartment to the root are saved) */
+    private function getAllParents($childDepartment) {
+        $depsArray = array();
+
+        while (true) {
+            $tmp = array(
+                'id' => $childDepartment->getId(),
+                'name' => $childDepartment->getName()
+            );
+
+            if(!$childDepartment->getParent()){
+                array_push($depsArray,$tmp);
+                return $depsArray;
+            }
+
+            array_push($depsArray,$tmp);
+            $childDepartment = $childDepartment->getParent();
+        }
+    }
+
+
+    /* Get department help topics using two parameters (department id and includeParentsHelpTopics) */
+    function getDepartmentHelpTopics() {
+        $departmentId = $_REQUEST['departmentId'];
+        $includeParentsHelpTopics = $_REQUEST['includeParentsHelpTopics'];
+
+        if (!($departmentId) || !($includeParentsHelpTopics))
+            return $this->exerr(422, __('Missing departmentId parameter or includeParentsHelpTopics parameter'));
+
+        if ($includeParentsHelpTopics != 'false' && $includeParentsHelpTopics != 'true')
+            return $this->exerr(422, __('includeParentsHelpTopics must be either true or false'));
+
+        // Checks for valid departmentId number
+        if (!is_numeric($departmentId))
+            return $this->exerr(401, __('Invalid department id number'));
+
+        // check if department exist
+        if (!Dept::Lookup($departmentId))
+            return $this->exerr(401, __('Department not found'));
+
+        $topics = Topic::getHelpTopics($publicOnly=true, $disabled=false);
+
+        if (!$topics) {
+            return $this->exerr(401, __('Topics not found'));
+        }
+
+        if ($includeParentsHelpTopics == 'true') {
+            $deps = $this->getAllParents(Dept::Lookup($departmentId));
+        } else {
+            $deps = Dept::Lookup($departmentId);
+        }
+
+        $helpTopics = array();
+        foreach ($topics as $key => $value) {
+            $top = Topic::Lookup($key);
+            $tmp = array(
+                'id' => $key,
+                'name' => $top->getName()
+            );
+
+            $topicDeptId = $top->getDeptId();
+
+            /*
+            * if parameter to include parents was true:
+            * we get through all the parent departments and check if the current topic matches any of them
+            *
+            * if parameter to include parents was false:
+            * deps will include only department sent as a parameter and we get only his topics
+            */
+            foreach ($deps as $dep) {
+                if($topicDeptId == $dep['id']) {
+                    array_push($helpTopics, $tmp);
+                    break;
+                }
+            }
+        }
+
+        $result = array(
+            'help_topics' => $helpTopics,
+            'status_code' => '0',
+            'status_msg' => 'success'
+        );
+
+        $result_code = 200;
+        $this->response($result_code, json_encode($result), $contentType='application/json');
+    }
 }
+
+
 
 //Local email piping controller - no API key required!
 class PipeApiController extends TicketApiController {
 
     //Overwrite grandparent's (ApiController) response method.
-    function response($code, $resp) {
+    function response($code, $resp, $contentType='text/plain') {
 
         //Use postfix exit codes - instead of HTTP
         switch($code) {
