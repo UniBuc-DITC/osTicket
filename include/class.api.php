@@ -372,6 +372,19 @@ class ApiController extends Controller {
         // are considered stateless
         $this->response($code, $error);
     }
+
+    //Default response method - can be overwritten in subclasses.
+    /*
+    function response($code, $resp) {
+        Http::response($code, $resp);
+        exit();
+    }
+    */
+
+    function response($code, $resp, $contentType="text/plain") {
+        Http::response($code, $resp, $contentType);
+        exit();
+    }
 }
 
 include_once "class.xml.php";
