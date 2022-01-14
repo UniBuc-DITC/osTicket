@@ -182,7 +182,7 @@ foreach (Topic::getHelpTopics(true) as $id=>$name) {
     <i class="icon-file-alt"></i>
     <a class="state <?php if ($status == 'open') echo 'active'; ?>"
         href="?<?php echo Http::build_query(array('a' => 'search', 'status' => 'open')); ?>">
-    <?php echo _P('ticket-status', 'Open'); if ($openTickets > 0) echo sprintf(' (%d)', $openTickets); ?>
+    <?php echo __('Open Tickets'); if ($openTickets > 0) echo sprintf(' (%d)', $openTickets); ?>
     </a>
     <?php if ($closedTickets) { ?>
     &nbsp;
@@ -194,7 +194,7 @@ if ($closedTickets) {?>
     <i class="icon-file-text"></i>
     <a class="state <?php if ($status == 'closed') echo 'active'; ?>"
         href="?<?php echo Http::build_query(array('a' => 'search', 'status' => 'closed')); ?>">
-    <?php echo __('Closed'); if ($closedTickets > 0) echo sprintf(' (%d)', $closedTickets); ?>
+    <?php echo __('Closed Tickets'); if ($closedTickets > 0) echo sprintf(' (%d)', $closedTickets); ?>
     </a>
 <?php } ?>
     </small>
