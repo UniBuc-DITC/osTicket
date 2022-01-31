@@ -20,6 +20,8 @@ services:
         - SERVER_NAME
     depends_on:
       - mariadb
+    ports:
+      - "80:80"
     volumes:
       - ost-config:/config
 
