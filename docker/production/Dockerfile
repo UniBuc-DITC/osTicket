@@ -24,7 +24,7 @@ RUN mkdir -p /config
 RUN cp --no-clobber \
     /var/www/html/include/ost-sampleconfig.php \
     /config/ost-config.php
-RUN ln -sf /config/ost-config \
+RUN ln -sf /config/ost-config.php \
     /var/www/html/include/ost-config.php
 
 # Mark the directory of the config file as a volume to make sure it \
