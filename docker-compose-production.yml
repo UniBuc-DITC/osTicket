@@ -13,7 +13,9 @@ services:
       MARIADB_PASSWORD:
   osticket:
     # Use a custom image, especially optimized for production
-    build: ./docker/production
+    build:
+      context: .
+      dockerfile: ./docker/production/Dockerfile
     depends_on:
       - mariadb
     volumes:
