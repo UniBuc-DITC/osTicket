@@ -19,9 +19,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - type: volume
-        source: ost-config
-        target: /var/www/html/include/ost-config.php
+      - ost-config:/config
 
 volumes:
   ost-config:
