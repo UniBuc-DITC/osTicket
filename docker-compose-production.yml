@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.7
+    environment:
+      # Create a default database for osTicket
+      MARIADB_DATABASE: osticket
+      MARIADB_USER: osticket
+      # Set through environment file
+      MARIADB_ROOT_PASSWORD:
+      # Set through environment file
+      MARIADB_PASSWORD:
+  osticket:
+    # Use a custom image, especially optimized for production
+    build: ./docker/production
+    depends_on:
+      - mariadb
