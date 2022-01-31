@@ -36,6 +36,7 @@ ssh -T "root@$hostname" true
 # Read the environment variables from an env file
 echo "Reading machine env vars"
 env_vars=$(cat ".env.$env_vars_suffix" | xargs)
+env_vars="SERVER_NAME='$hostname' $env_vars"
 
 # If requested, configure firewall
 if [[ "$configure_firewall" = true ]]

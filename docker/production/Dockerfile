@@ -9,6 +9,10 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions mysqli gd imap intl apcu opcache
 
+# Tell Apache what is the public server name
+ARG SERVER_NAME
+RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
+
 # Enable Apache rewrite engine to make the API work
 RUN a2enmod rewrite
 

@@ -16,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/production/Dockerfile
+      args:
+        - SERVER_NAME
     depends_on:
       - mariadb
     volumes:
