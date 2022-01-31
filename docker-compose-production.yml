@@ -16,3 +16,10 @@ services:
     build: ./docker/production
     depends_on:
       - mariadb
+    volumes:
+      - type: volume
+        source: ost-config
+        target: /var/www/html/include/ost-config.php
+
+volumes:
+  ost-config:

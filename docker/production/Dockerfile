@@ -16,6 +16,8 @@ RUN a2enmod rewrite
 COPY . /var/www/html/
 
 # Initialize the config file
-COPY ./include/ost-sampleconfig.php /var/www/html/include/ost-config.php
+RUN cp --no-clobber \
+    /var/www/html/include/ost-sampleconfig.php \
+    /var/www/html/include/ost-config.php
 
 EXPOSE 80
