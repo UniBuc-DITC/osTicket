@@ -66,7 +66,7 @@ fi
 echo "Deploying as root to $hostname"
 
 # Upload the modified code
-git ftp push --auto-init -u root "sftp://$hostname" --remote-root "/root/$dir_name" -vv
+git ftp push --auto-init -u root "sftp://$hostname" --remote-root "/root/$dir_name"
 
 # Rebuild and restart the containers
 ssh root@$hostname "\
