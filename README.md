@@ -35,7 +35,7 @@ When creating the admin account, it's recommended to use some easy-to-remember c
 
 Make sure you specify the following database settings:
 
-- MySQL Hostname: `mysql`
+- MySQL Hostname: `mariadb`
 - MySQL Database: `osticket`
 - MySQL Username: `osticket`
 - MySQL Password: `osticket_pwd`
