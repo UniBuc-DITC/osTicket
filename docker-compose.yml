@@ -1,14 +1,14 @@
 version: "3"
 services:
-  mysql:
-    image: mysql:5.7
+  mariadb:
+    image: mariadb:10.7
     environment:
-      # Automatically generate a random root password on startup
-      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      # Don't secure the root user, since we're developing locally
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1
       # These values are used during the install, as described in the `README`
-      - MYSQL_DATABASE=osticket
-      - MYSQL_USER=osticket
-      - MYSQL_PASSWORD=osticket_pwd
+      - MARIADB_DATABASE=osticket
+      - MARIADB_USER=osticket
+      - MARIADB_PASSWORD=osticket_pwd
     ports:
       # Expose the database port to allow connecting to it locally
       - "3306:3306"
@@ -16,7 +16,7 @@ services:
     # Use a custom image with the required extensions
     build: ./docker/development/
     depends_on:
-      - mysql
+      - mariadb
     ports:
       - "8080:80"
     extra_hosts:
