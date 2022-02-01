@@ -10,16 +10,23 @@ while [[ $# -gt 0 ]]; do
         --configure-firewall)
           configure_firewall=true
           shift
+          ;;
+        --delete-setup-directory)
+          delete_setup_directory=true
           shift
           ;;
         --production)
           deploy_to_production=true
           shift
+          ;;
+        -*)
+          echo "Unknown option $1"
+          exit 1
+          ;;
+        *)
           shift
           ;;
-        *) break
     esac
-    shift
 done
 
 if [ "$deploy_to_production" = true ]; then
@@ -60,6 +67,19 @@ then
     echo "Rules confirmed, enabling firewall"
     ssh "root@$hostname" "ufw enable"
   fi
+
+  exit
+fi
+
+if [[ "$delete_setup_directory" = true ]]
+then
+  echo 'Deleting setup directory...'
+
+  ssh "root@$hostname" "\
+    cd $dir_name && \
+    docker-compose -f docker-compose-production.yml exec -T osticket rm -r /var/www/html/setup/"
+
+  echo 'Done'
 
   exit
 fi

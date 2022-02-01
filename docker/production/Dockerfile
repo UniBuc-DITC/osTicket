@@ -28,7 +28,7 @@ RUN ln -sf /config/ost-config.php \
     /var/www/html/include/ost-config.php
 RUN chown www-data: /config/ost-config.php
 
-# Mark the directory of the config file as a volume to make sure it \
+# Mark the directory of the config file as a volume to make sure it
 # survives between container restarts
 VOLUME /config
 
