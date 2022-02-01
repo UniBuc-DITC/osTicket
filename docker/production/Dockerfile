@@ -27,6 +27,16 @@ RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 # Enable Apache rewrite engine to make the API work
 RUN a2enmod rewrite
 
+# Enable Apache headers module, for HSTS
+RUN a2enmod headers
+
+# Turn on HSTS
+RUN echo '\
+<VirtualHost *:443> \
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \
+</VirtualHost> \
+' >> /etc/apache2/apache2.conf
+
 # Copy the source code
 COPY . /var/www/html/
 
