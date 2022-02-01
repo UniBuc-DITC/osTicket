@@ -35,6 +35,8 @@ services:
       - certificates:/etc/letsencrypt
       # Mount plugins from outside the container
       - ./include/plugins:/var/www/html/include/plugins:ro
+      # Mount language packs from the outside
+      - ./include/i18n:/var/www/html/include/i18n:ro
 
 volumes:
   data:
