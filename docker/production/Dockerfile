@@ -38,3 +38,4 @@ RUN chown www-data: /config/ost-config.php
 VOLUME /config
 
 EXPOSE 80
+EXPOSE 443
