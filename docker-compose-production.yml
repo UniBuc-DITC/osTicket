@@ -22,6 +22,7 @@ services:
       dockerfile: ./docker/production/Dockerfile
       args:
         - SERVER_NAME
+        - LETS_ENCRYPT_EMAIL_ADDRESS
     depends_on:
       - mariadb
     ports:

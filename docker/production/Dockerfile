@@ -1,5 +1,14 @@
 FROM php:7.4-apache
 
+ARG SERVER_NAME
+ARG LETS_ENCRYPT_EMAIL_ADDRESS
+
+# Install certbot and the corresponding Apache plugin
+RUN apt-get update && apt-get install -y certbot python3-certbot-apache
+
+# Run certbot to get certificates
+RUN certbot --non-interactive --agree-tos -m $LETS_ENCRYPT_EMAIL_ADDRESS --domains $SERVER_NAME
+
 # Use the default production config file
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
@@ -10,7 +19,6 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions mysqli gd imap intl apcu opcache
 
 # Tell Apache what is the public server name
-ARG SERVER_NAME
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 
 # Enable Apache rewrite engine to make the API work
