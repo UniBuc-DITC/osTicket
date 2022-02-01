@@ -26,7 +26,6 @@ RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 
 # Enable TLS module
 RUN a2enmod ssl
-RUN a2ensite default-ssl
 
 # Enable Apache rewrite engine to make the API work
 RUN a2enmod rewrite
