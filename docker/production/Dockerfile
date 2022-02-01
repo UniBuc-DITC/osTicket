@@ -32,9 +32,9 @@ RUN a2enmod headers
 
 # Turn on HSTS
 RUN echo '\
-<VirtualHost *:443> \
-  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \
-</VirtualHost> \
+<VirtualHost *:443> \n\
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \n\
+</VirtualHost> \n\
 ' >> /etc/apache2/apache2.conf
 
 # Copy the source code
