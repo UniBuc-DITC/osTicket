@@ -11,6 +11,8 @@ services:
       MARIADB_ROOT_PASSWORD:
       # Set through environment file
       MARIADB_PASSWORD:
+    ports:
+      - "127.0.0.1:3306:3306"
   osticket:
     # Use a custom image, especially optimized for production
     build:
