@@ -6,9 +6,6 @@ ARG LETS_ENCRYPT_EMAIL_ADDRESS
 # Install certbot and the corresponding Apache plugin
 RUN apt-get update && apt-get install -y certbot python3-certbot-apache
 
-# Run certbot to get certificates
-RUN certbot --non-interactive --apache --agree-tos -m $LETS_ENCRYPT_EMAIL_ADDRESS --domains $SERVER_NAME
-
 # Use the default production config file
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 

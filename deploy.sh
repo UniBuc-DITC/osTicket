@@ -15,6 +15,10 @@ while [[ $# -gt 0 ]]; do
           delete_setup_directory=true
           shift
           ;;
+        --renew-certificates)
+          renew_certificates=true
+          shift
+          ;;
         --production)
           deploy_to_production=true
           shift
@@ -71,13 +75,26 @@ then
   exit
 fi
 
+if [[ "$renew_certificates" = true ]]
+then
+  echo 'Running certbot to renew certificates...'
+  ssh -t "root@$hostname" "\
+        cd $dir_name && \
+        $env_vars docker-compose -f docker-compose-production.yml exec \
+        certbot --non-interactive --apache --agree-tos -m \$LETS_ENCRYPT_EMAIL_ADDRESS --domains $hostname"
+
+  echo 'Done'
+
+  exit
+fi
+
 if [[ "$delete_setup_directory" = true ]]
 then
   echo 'Deleting setup directory...'
 
-  ssh "root@$hostname" "\
+  ssh -t "root@$hostname" "\
     cd $dir_name && \
-    docker-compose -f docker-compose-production.yml exec -T osticket rm -r /var/www/html/setup/"
+    docker-compose -f docker-compose-production.yml exec osticket rm -r /var/www/html/setup/"
 
   echo 'Done'
 
