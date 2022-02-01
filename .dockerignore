@@ -1,5 +1,6 @@
 .git/
 /docker
+!/docker/production/htaccess
 .idea/
 .vscode/
 .env*
