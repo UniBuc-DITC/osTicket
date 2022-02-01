@@ -3,8 +3,11 @@ FROM php:7.4-apache
 ARG SERVER_NAME
 ARG LETS_ENCRYPT_EMAIL_ADDRESS
 
+# Install cron
+RUN apt-get update && apt-get -y install cron
+
 # Install certbot and the corresponding Apache plugin
-RUN apt-get update && apt-get install -y certbot python3-certbot-apache
+RUN apt-get install -y certbot python3-certbot-apache
 
 # Use the default production config file
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
