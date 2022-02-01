@@ -3,6 +3,7 @@ version: "3"
 services:
   mariadb:
     image: mariadb:10.7
+    restart: unless-stopped
     environment:
       # Create a default database for osTicket
       MARIADB_DATABASE: osticket
@@ -25,6 +26,7 @@ services:
         - LETS_ENCRYPT_EMAIL_ADDRESS
     depends_on:
       - mariadb
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
