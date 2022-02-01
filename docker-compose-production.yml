@@ -13,6 +13,8 @@ services:
       MARIADB_PASSWORD:
     ports:
       - "127.0.0.1:3306:3306"
+    volumes:
+      - data:/var/lib/mysql
   osticket:
     # Use a custom image, especially optimized for production
     build:
@@ -28,4 +30,5 @@ services:
       - ost-config:/config
 
 volumes:
+  data:
   ost-config:
