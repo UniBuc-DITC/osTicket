@@ -33,6 +33,8 @@ services:
     volumes:
       - ost-config:/config
       - certificates:/etc/letsencrypt
+      # Mount plugins from outside the container
+      - ./include/plugins:/var/www/html/include/plugins:ro
 
 volumes:
   data:
