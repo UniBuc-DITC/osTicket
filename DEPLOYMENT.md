@@ -30,3 +30,11 @@ You can also provide the deployment script with the following parameters:
   to automatically renew the certificates when needed.
 - `--delete-setup-directory`: deletes the `setup` directory of the osTicket install. Useful after app updates
   or (re)deployments.
+
+## Installing plugins and language packs
+
+The production `docker-compose` file is configured to mount the `include/plugins` and `include/i18n` directories
+from the host machine as read-only.
+
+Any plugins/language packs installed into these directories will be available for activation
+from the osTicket admin console.
