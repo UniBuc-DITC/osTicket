@@ -40,6 +40,9 @@ RUN echo '\
 # Copy the source code
 COPY . /var/www/html/
 
+# Copy the .htaccess config file
+COPY ./docker/production/htaccess /var/www/html/.htaccess
+
 # Initialize the config file
 RUN mkdir -p /config
 RUN cp --no-clobber \
