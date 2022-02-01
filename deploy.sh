@@ -46,7 +46,8 @@ ssh -T "root@$hostname" true
 
 # Read the environment variables from an env file
 echo "Reading machine env vars"
-env_vars=$(xargs < ".env.$env_vars_suffix")
+env_file=".env.$env_vars_suffix"
+env_vars=$(xargs < $env_file)
 env_vars="SERVER_NAME='$hostname' $env_vars"
 
 # If requested, configure firewall
@@ -78,10 +79,13 @@ fi
 if [[ "$renew_certificates" = true ]]
 then
   echo 'Running certbot to renew certificates...'
-  ssh -t "root@$hostname" "\
+
+  source $env_file
+
+  ssh "root@$hostname" "\
         cd $dir_name && \
-        $env_vars docker-compose -f docker-compose-production.yml exec \
-        certbot --non-interactive --apache --agree-tos -m \$LETS_ENCRYPT_EMAIL_ADDRESS --domains $hostname"
+        docker-compose -f docker-compose-production.yml exec -T osticket \
+        certbot --non-interactive --apache --agree-tos --email $LETS_ENCRYPT_EMAIL_ADDRESS --domains $hostname"
 
   echo 'Done'
 
@@ -92,9 +96,9 @@ if [[ "$delete_setup_directory" = true ]]
 then
   echo 'Deleting setup directory...'
 
-  ssh -t "root@$hostname" "\
+  ssh "root@$hostname" "\
     cd $dir_name && \
-    docker-compose -f docker-compose-production.yml exec osticket rm -r /var/www/html/setup/"
+    docker-compose -f docker-compose-production.yml exec -T osticket rm -r /var/www/html/setup/"
 
   echo 'Done'
 
