@@ -25,10 +25,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 
 # Enable Apache rewrite engine to make the API work
-RUN a2enmod rewrite
+RUN cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/
 
 # Enable Apache headers module, for HSTS
-RUN a2enmod headers
+RUN cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
 
 # Turn on HSTS
 RUN echo '\
