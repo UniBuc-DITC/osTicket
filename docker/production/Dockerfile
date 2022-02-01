@@ -34,11 +34,11 @@ RUN cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/
 RUN cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
 
 # Turn on HSTS
-RUN echo '\
-<VirtualHost *:443> \n\
-  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \n\
-</VirtualHost> \n\
-' >> /etc/apache2/apache2.conf
+#RUN echo '\
+#<VirtualHost *:443> \n\
+#  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \n\
+#</VirtualHost> \n\
+#' >> /etc/apache2/apache2.conf
 
 # Copy the source code
 COPY . /var/www/html/
