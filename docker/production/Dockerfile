@@ -25,20 +25,19 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 
 # Enable TLS module
-RUN cp /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled/
+RUN a2enmod ssl
+RUN a2ensite default-ssl
 
 # Enable Apache rewrite engine to make the API work
-RUN cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/
+RUN a2enmod rewrite
 
 # Enable Apache headers module, for HSTS
-RUN cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
+RUN a2enmod headers
 
 # Turn on HSTS
-#RUN echo '\
-#<VirtualHost *:443> \n\
-#  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains" \n\
-#</VirtualHost> \n\
-#' >> /etc/apache2/apache2.conf
+RUN echo '\
+Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"\
+' >> /etc/apache2/apache2.conf
 
 # Copy the source code
 COPY . /var/www/html/
