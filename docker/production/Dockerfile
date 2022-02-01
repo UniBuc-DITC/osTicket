@@ -24,6 +24,9 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 # Tell Apache what is the public server name
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
 
+# Enable TLS module
+RUN cp /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled/
+
 # Enable Apache rewrite engine to make the API work
 RUN cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/
 
