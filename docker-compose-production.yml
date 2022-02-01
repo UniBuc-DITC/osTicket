@@ -30,7 +30,9 @@ services:
       - "443:443"
     volumes:
       - ost-config:/config
+      - certificates:/etc/letsencrypt
 
 volumes:
   data:
   ost-config:
+  certificates:
