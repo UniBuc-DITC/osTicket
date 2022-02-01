@@ -9,6 +9,9 @@ RUN apt-get update && apt-get -y install cron
 # Install certbot and the corresponding Apache plugin
 RUN apt-get install -y certbot python3-certbot-apache
 
+# Set up a certificate auto renewal job
+RUN crontab -l | { cat; echo '0 12 * * * /usr/bin/certbot renew --quiet'; } | crontab -
+
 # Use the default production config file
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
