@@ -24,7 +24,7 @@ RUN printf '[PHP]\ndate.timezone = "$TZ"\n' > /usr/local/etc/php/conf.d/tzone.in
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions mysqli gd imap intl apcu opcache
+    install-php-extensions mysqli gd imap intl apcu opcache zip
 
 # Tell Apache what is the public server name
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
