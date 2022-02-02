@@ -34,6 +34,12 @@ You can also provide the deployment script with the following parameters:
 After deploying a new version of the app, you should run `--renew-certificates` to make sure all the TLS certificates
 are fresh and configured, and then `--delete-setup-directory`, since otherwise osTicket will complain.
 
+Therefore, the full command you should run for **updating** an existing installation is:
+
+```sh
+./deploy.sh && ./deploy.sh --renew-certificates && ./deploy.sh --delete-setup-directory
+```
+
 ## Installing plugins and language packs
 
 The production `docker-compose` file is configured to mount the `include/plugins` and `include/i18n` directories
