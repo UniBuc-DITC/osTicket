@@ -24,6 +24,7 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       - OSTICKET_ENABLE_USER_CREATION=true
+      - OSTICKET_ENABLE_CLIENT_PASSWORD_LOGIN=true
     volumes:
       - ./:/var/www/html/
       - ./docker/ost-config.php:/var/www/html/include/ost-config.php
