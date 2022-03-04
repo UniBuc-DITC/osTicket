@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.7
+    restart: unless-stopped
+    environment:
+      # Create a default database for osTicket
+      MARIADB_DATABASE: osticket
+      MARIADB_USER: osticket
+      # Set through environment file
+      MARIADB_ROOT_PASSWORD:
+      # Set through environment file
+      MARIADB_PASSWORD:
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - data:/var/lib/mysql
+  osticket:
+    # Use a custom image, especially optimized for production
+    build:
+      context: .
+      dockerfile: ./docker/production/Dockerfile
+      args:
+        - SERVER_NAME
+        - LETS_ENCRYPT_EMAIL_ADDRESS
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ost-config:/config
+      - certificates:/etc/letsencrypt
+      # Mount plugins from outside the container
+      - ./include/plugins:/var/www/html/include/plugins:ro
+      # Mount language packs from the outside
+      - ./include/i18n:/var/www/html/include/i18n:ro
+
+volumes:
+  data:
+  ost-config:
+  certificates:

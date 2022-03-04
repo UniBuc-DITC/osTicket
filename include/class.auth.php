@@ -788,10 +788,16 @@ Signal::connect('api', function($dispatcher) {
     $dispatcher->append(
         url('^/auth/ext$', function() {
             if ($id = $_SESSION['ext:bk:id']) {
+                error_log('Authenticating user with auth back end ' . $id);
+
                 $bk = StaffAuthenticationBackend::getBackend($id)
                     ?: UserAuthenticationBackend::getBackend($id);
-                if ($bk instanceof ExternalAuthentication)
+                if ($bk instanceof ExternalAuthentication) {
                     $bk->triggerAuth();
+                } else {
+                    echo 'Invalid authentication back end';
+                    die;
+                }
             } else {
                 /**
                  * Due to changes in the SameSite cookie option policy
@@ -802,7 +808,7 @@ Signal::connect('api', function($dispatcher) {
                  * since it's basically a trampoline which sends the user through the login flow twice,
                  * but it gets the job done.
                  */
-                //error_log('Working around cookie SameSite limitation');
+                error_log('Working around cookie SameSite limitation using trampouline');
                 header('Location: ' . '/login.php?do=ext&bk=openid_ms.client');
                 exit;
             }
@@ -1614,7 +1620,7 @@ Signal::connect('auth.clean', array('PasswordPolicy', 'cleanSessions'));
 
 /*
  * Basic default password policy that ships with osTicket.
- * 
+ *
  */
 class osTicketPasswordPolicy
 extends PasswordPolicy {
