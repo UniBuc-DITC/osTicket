@@ -18,7 +18,7 @@ if ($content) {
 <h1><?php echo Format::display($title); ?></h1>
 <?php
 // No account can be created, because all authentication is done via MS365.
-// TODO: make we could just modify the custom message from the admin interface?
+// TODO: maybe we could just modify the custom message from the admin interface?
 /*
 <p><?php echo Format::display($body); ?></p>
 */
@@ -26,6 +26,9 @@ if ($content) {
 <form action="login.php" method="post" id="clientLogin">
     <?php csrf_token(); ?>
 <div style="display:table-row">
+    <?php
+    if ($_ENV['OSTICKET_ENABLE_CLIENT_PASSWORD_LOGIN']) {
+    ?>
     <div class="login-box">
     <strong><?php echo Format::htmlchars($errors['login']); ?></strong>
     <div>
@@ -41,6 +44,7 @@ if ($content) {
 <?php } ?>
     </p>
     </div>
+    <?php } ?>
     <div style="display:table-cell;padding: 15px;vertical-align:top">
 <?php
 

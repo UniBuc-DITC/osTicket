@@ -1,5 +1,6 @@
 .htaccess
 php53.cgi
+docker/ost-config.php
 include/ost-config.php
 setup/cli/modules/importer
 *.sw[a-z]
