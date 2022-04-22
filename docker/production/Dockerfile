@@ -46,6 +46,9 @@ Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains
 # Copy the source code
 COPY . /var/www/html/
 
+# Copy the start script
+COPY ./docker/production/start.sh /start.sh
+
 # Copy the .htaccess config file
 COPY ./docker/production/htaccess /var/www/html/.htaccess
 
@@ -64,3 +67,5 @@ VOLUME /config
 
 EXPOSE 80
 EXPOSE 443
+
+ENTRYPOINT ["bash", "/start.sh"]
