@@ -944,7 +944,7 @@ class TicketFilter {
 
         $bounce_headers = array(
             'From'  => array('stripos',
-                        array('MAILER-DAEMON', '<>', 'postmaster@'), null, false),
+                        array('Microsoft Outlook', 'MAILER-DAEMON','<>', 'postmaster@'), null, false),
             'Subject'   => array('stripos',
                 array('DELIVERY FAILURE', 'DELIVERY STATUS',
                     'UNDELIVERABLE:', 'Undelivered Mail Returned'), 0),
