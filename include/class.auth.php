@@ -809,7 +809,17 @@ Signal::connect('api', function($dispatcher) {
                  * but it gets the job done.
                  */
                 error_log('Working around cookie SameSite limitation using trampouline');
-                header('Location: ' . '/login.php?do=ext&bk=openid_ms.client');
+                switch ($_POST['state']) {
+                    case 'CLIENT':
+                        header('Location: /login.php');
+                        break;
+                    case 'STAFF':
+                        header('Location: /scp/login.php');
+                        break;
+                    default:
+                        echo 'Unknown login type';
+                        die;
+                }
                 exit;
             }
         })
