@@ -1,6 +1,13 @@
 <?php
 // The code isn't properly localized, it only supports Romanian and English.
 $isRomanian = (Internationalization::getCurrentLanguage() == 'ro');
+
+// If the current session has been "time-bombed" to avoid session fixation attacks after a login,
+// forcefully refresh the session now, to ensure the Ajax calls don't see a different session ID
+// (which would affect the generation of form field names / IDs and break the draft saving feature).
+if (isset($_SESSION['TIME_BOMB'])) {
+    $thisclient->regenerateSession();
+}
 ?>
 
 <style>
