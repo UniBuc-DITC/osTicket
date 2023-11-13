@@ -22,7 +22,10 @@ The deployment script is configured to deploy to the staging environment
 by appending the `--production` flag.
 
 You can also provide the deployment script with the following parameters:
+- `--staging`: makes the script work with the staging environment (the default).
 - `--production`: makes the script work with the production environment, as described above.
+- `--verbose`: makes the script run in verbose mode.
+- `--insecure`: tells `git-ftp` to ignore the server's certificates.
 - `--configure-firewall`: makes the script configure and turn on the target machine's firewall,
   instead of deploying anything.
 - `--renew-certificates`: ask `certbot` to renew the TLS certificates for the target server.
@@ -30,6 +33,7 @@ You can also provide the deployment script with the following parameters:
   to automatically renew the certificates when needed.
 - `--delete-setup-directory`: deletes the `setup` directory of the osTicket install. Useful after app updates
   or (re)deployments.
+It will also use the `SSH_KEY_PATH` environment, if set, to determine which SSH key to use for connecting to the server.
 
 After deploying a new version of the app, you should run `--renew-certificates` to make sure all the TLS certificates
 are fresh and configured, and then `--delete-setup-directory`, since otherwise osTicket will complain.

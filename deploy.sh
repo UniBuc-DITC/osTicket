@@ -3,10 +3,15 @@
 set -e
 
 dir_name='osTicket'
+ssh_key_path="${SSH_KEY_PATH:-"$HOME/.ssh/id_ecdsa"}"
 
 # Read optional parameters
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --verbose)
+          verbose=true
+          shift
+          ;;
         --configure-firewall)
           configure_firewall=true
           shift
@@ -19,8 +24,17 @@ while [[ $# -gt 0 ]]; do
           renew_certificates=true
           shift
           ;;
+        --staging)
+          # This is the default, but permit this flag for completeness.
+          deploy_to_production=false
+          shift
+          ;;
         --production)
           deploy_to_production=true
+          shift
+          ;;
+        --insecure)
+          insecure=true
           shift
           ;;
         -*)
@@ -108,7 +122,7 @@ fi
 echo "Deploying as root to $hostname"
 
 # Upload the modified code
-git ftp push --auto-init -u root "sftp://$hostname" --remote-root "/root/$dir_name"
+git ftp push --auto-init -u root --key "$ssh_key_path" "sftp://$hostname" --remote-root "/root/$dir_name" ${verbose+'-vv'} ${insecure+'--insecure'}
 
 # Rebuild and restart the containers
 ssh root@$hostname "\
