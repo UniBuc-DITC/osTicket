@@ -1577,6 +1577,12 @@ implements RestrictedAccess, Threadable, Searchable {
         if (!$this->save(true))
             return false;
 
+        // If the ticket has been moved to a waiting status, change its estimated due date.
+        if ($status->isWaiting()) {
+            $this->lastupdate = SqlFunction::NOW();
+            $this->updateEstDueDate(true);
+        }
+
         // Refer thread to previously assigned or closing agent
         if ($refer && $cfg->autoReferTicketsOnClose())
             $this->getThread()->refer($refer);
@@ -2429,6 +2435,10 @@ implements RestrictedAccess, Threadable, Searchable {
 
         // Only open tickets can be marked overdue
         if (!$this->isOpen())
+            return false;
+
+        // Tickets which are open but in waiting status should not be marked as overdue
+        if ($this->getStatus()->isWaiting())
             return false;
 
         if ($this->isOverdue())
@@ -4725,7 +4735,10 @@ implements RestrictedAccess, Threadable, Searchable {
         $overdue = static::objects()
             ->filter(array(
                 'isoverdue' => 0,
-                'status__state' => 'open',
+                Q::all(array(
+                    'status__state' => 'open',
+                    Q::not(array('status__name__in' => array('Waiting', 'În așteptare')))
+                )),
                 Q::any(array(
                     Q::all(array(
                         'duedate__isnull' => true,

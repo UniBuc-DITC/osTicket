@@ -1231,6 +1231,11 @@ implements CustomListItem, TemplateVariable, Searchable {
                 || $this->hasFlag('mode', self::INTERNAL));
     }
 
+    function isWaiting() {
+        $name = $this->get('name');
+        return $name == 'Waiting' || $name == 'În așteptare';
+    }
+
 
     function getNumTickets() {
         return $this->tickets->count();
