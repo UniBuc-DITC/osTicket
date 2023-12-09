@@ -2,6 +2,7 @@
 /docker
 !/docker/production/htaccess
 !/docker/production/start.sh
+!/docker/production/conf.d/
 .idea/
 .vscode/
 .env*

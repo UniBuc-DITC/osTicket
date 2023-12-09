@@ -18,13 +18,17 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Configure timezone
 ENV TZ=Europe/Bucharest
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN printf '[PHP]\ndate.timezone = "$TZ"\n' > /usr/local/etc/php/conf.d/tzone.ini
+RUN printf "[PHP]\ndate.timezone = \"$TZ\"\n" > /usr/local/etc/php/conf.d/tzone.ini
 
 # Install recommended PHP extensions
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions mysqli gd imap intl apcu opcache zip
+
+# Install the Elastic APM agent for PHP
+RUN curl --output /tmp/apm-agent-php.deb --location https://github.com/elastic/apm-agent-php/releases/download/v1.10.0/apm-agent-php_1.10.0_all.deb && \
+    dpkg --install /tmp/apm-agent-php.deb
 
 # Tell Apache what is the public server name
 RUN echo "ServerName $SERVER_NAME" >> /etc/apache2/apache2.conf
@@ -51,6 +55,9 @@ COPY ./docker/production/start.sh /start.sh
 
 # Copy the .htaccess config file
 COPY ./docker/production/htaccess /var/www/html/.htaccess
+
+# Enable Elastic APM
+COPY ./docker/production/conf.d/elastic_apm.ini /usr/local/etc/php/conf.d/
 
 # Initialize the config file
 RUN mkdir -p /config

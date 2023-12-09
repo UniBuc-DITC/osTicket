@@ -28,5 +28,5 @@ services:
     volumes:
       - ./:/var/www/html/
       - ./docker/ost-config.php:/var/www/html/include/ost-config.php
-      - ./docker/development/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+      - ./docker/development/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
       - ./docker/development/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini:ro

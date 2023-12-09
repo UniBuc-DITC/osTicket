@@ -30,6 +30,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - ELASTIC_APM_SERVICE_NODE_NAME
+      - ELASTIC_APM_ENVIRONMENT
     volumes:
       - ost-config:/config
       - certificates:/etc/letsencrypt
