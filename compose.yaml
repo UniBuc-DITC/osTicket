@@ -1,7 +1,6 @@
-version: "3"
 services:
   mariadb:
-    image: mariadb:10.7
+    image: mariadb:11.2
     environment:
       # Don't secure the root user, since we're developing locally
       - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1
@@ -12,6 +11,7 @@ services:
     ports:
       # Expose the database port to allow connecting to it locally
       - "3306:3306"
+
   osticket:
     # Use a custom image with the required extensions
     build: ./docker/development/

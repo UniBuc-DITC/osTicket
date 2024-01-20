@@ -46,7 +46,7 @@ Therefore, the full command you should run for **updating** an existing installa
 
 ## Installing plugins and language packs
 
-The production `docker-compose` file is configured to mount the `include/plugins` and `include/i18n` directories
+The production `compose.yaml` file is configured to mount the `include/plugins` and `include/i18n` directories
 from the host machine as read-only.
 
 Any plugins/language packs installed into these directories will be available for activation

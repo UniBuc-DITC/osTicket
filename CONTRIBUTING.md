@@ -5,7 +5,7 @@ how you can set up a local development environment and get started contributing 
 
 ## Running locally with Docker
 
-You can run a local instance of osTicket using [Docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/).
+You can run a local instance of osTicket using [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
 
 If it's the first time you're creating the containers, or after you've deleted the database,
 you should copy the `include/ost-sampleconfig.php` file to `docker/ost-config.php`

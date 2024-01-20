@@ -98,7 +98,7 @@ then
 
   ssh "root@$hostname" "\
         cd $dir_name && \
-        docker-compose -f docker-compose-production.yml exec -T osticket \
+        docker compose -f compose-production.yaml exec -T osticket \
         certbot --non-interactive --apache --agree-tos --email $LETS_ENCRYPT_EMAIL_ADDRESS --domains $hostname"
 
   echo 'Done'
@@ -112,7 +112,7 @@ then
 
   ssh "root@$hostname" "\
     cd $dir_name && \
-    docker-compose -f docker-compose-production.yml exec -T osticket rm -r /var/www/html/setup/"
+    docker compose -f compose-production.yaml exec -T osticket rm -r /var/www/html/setup/"
 
   echo 'Done'
 
@@ -127,4 +127,4 @@ git ftp push --auto-init -u root --key "$ssh_key_path" "sftp://$hostname" --remo
 # Rebuild and restart the containers
 ssh root@$hostname "\
   cd $dir_name && \
-  $env_vars docker-compose -f docker-compose-production.yml up --build -d"
+  $env_vars docker compose -f compose-production.yaml up --build -d"
